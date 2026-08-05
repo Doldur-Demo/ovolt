@@ -1,4 +1,49 @@
 <!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Doldur × ovolt — Vizyon Demo</title>
+
+<!-- ===== ŞİFRE KONTROLÜ ===== -->
+<script>
+// 🔐 DEMO ŞİFRESİ - Bunu kendi belirlediğin şifreyle değiştir!
+const DEMO_PASSWORD = "aotm1403*"; // ← İstediğin şifreyi yaz
+
+// Sayfa yüklenmeden önce şifre kontrolü yap
+(function() {
+    // Eğer daha önce doğru şifre girildiyse atla
+    if (sessionStorage.getItem('demo_authorized') === 'true') {
+        return;
+    }
+
+    const enteredPassword = prompt(
+        '🔒 Bu demo özel bir müşteri içindir.\n' +
+        'Lütfen size iletilen şifreyi girin:'
+    );
+
+    if (enteredPassword === DEMO_PASSWORD) {
+        // Şifre doğru, oturum boyunca hatırla
+        sessionStorage.setItem('demo_authorized', 'true');
+    } else {
+        // Şifre yanlış
+        if (enteredPassword !== null) {
+            alert('❌ Hatalı şifre! Demo\'ya erişim reddedildi.');
+        }
+        document.body.innerHTML = `
+            <div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;background:#0B1F33;color:white;text-align:center;padding:20px;flex-direction:column;">
+                <h1 style="font-size:48px;margin:0;">🔒</h1>
+                <h2 style="font-weight:400;">Özel Demo</h2>
+                <p style="opacity:0.6;">Bu demo yalnızca şifresi olan kullanıcılar içindir.</p>
+                <p style="opacity:0.4;font-size:12px;margin-top:30px;">Doldur &amp; ovolt · 2026</p>
+            </div>
+        `;
+        throw new Error('Unauthorized');
+    }
+})();
+</script>
+<!-- ===== ŞİFRE KONTROLÜ SONU ===== -->
+
+<!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
